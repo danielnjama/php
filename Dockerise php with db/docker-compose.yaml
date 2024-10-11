@@ -1,0 +1,32 @@
+version: '3.3'
+services:
+  php-apache:
+    build: .
+    ports:
+      - "8000:80"  # Map port 8000 on your local machine to port 80 on the container
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: dtechnol_php
+      MYSQL_USER: dtechnol_php
+      MYSQL_PASSWORD: test@1234
+    ports:
+      - "3306:3306"  # Optional: If you need MySQL accessible outside the container
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
+
+volumes:
+  mysql_data:
+
+networks:
+  app-network:
